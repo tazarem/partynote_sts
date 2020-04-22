@@ -77,9 +77,9 @@ public class NoteController {
 		int answer = ms.deletePost(post);
 	return answer;}
 	
-	@RequestMapping(value = "/editePost", method = RequestMethod.POST)
+	@RequestMapping(value = "/editPost", method = RequestMethod.POST)
 	public int editPost(@RequestBody PostDTO post) {
-		System.out.println("포스트 수정 : " + post.getPostCode());
+		System.out.println("포스트 수정 : " + post);
 		int answer = ms.editPost(post);
 	return answer;}
 }

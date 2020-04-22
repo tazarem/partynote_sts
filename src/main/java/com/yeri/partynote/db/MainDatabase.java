@@ -100,7 +100,7 @@ public class MainDatabase {
 
 	public int editPost(PostDTO post) {
 
-		return sql.update("Note.updatePost",post);
+		return sql.update("Note.editPost",post);
 	}
 
 

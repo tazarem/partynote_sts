@@ -79,6 +79,7 @@
 	postContents=#{postContents},
 	postColor=#{postColor},
 	postIndex=#{postIndex},
+	usable=true,
 	recentDate=default
 	WHERE postCode=#{postCode}
 	</update>
