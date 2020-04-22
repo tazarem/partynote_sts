@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="Note"> 
+	<select id="bringNote" parameterType="String" resultType="note">
+	SELECT * FROM PartyNote where noteCode like #{userId} and usable=true order by recentDate asc
+	</select>
+	<select id="countNote" parameterType="String" resultType="note">
+	SELECT * FROM PartyNote where noteCode like #{userId}
+	</select>
+	<insert id="makeNote" parameterType="note">
+	INSERT INTO PartyNote values(#{noteCode},#{noteTitle},#{noteDes},#{noteColor},
+	'',default,default)
+	</insert>
+	
+	<update id="deleteNote" parameterType="note">
+	UPDATE PartyNote SET
+	usable=false
+	WHERE noteCode=#{noteCode}
+	</update>
+	<delete id="allDeletePost" parameterType="note">
+	DELETE FROM NotePost WHERE postCode like #{noteCode}
+	</delete>
+	<select id="bringDisabledNote" parameterType="String" resultType="note">
+	SELECT*FROM PartyNote where noteCode like #{userId} and usable=false order by noteCode asc limit 1
+	</select>
+	
+	<update id="replaceNote" parameterType="note">
+	UPDATE PartyNote SET
+	noteTitle=#{noteTitle},
+	noteDes=#{noteDes},
+	noteColor=#{noteColor},
+	usable=true,
+	recentDate=default
+	WHERE noteCode=#{noteCode}
+	</update>
+	
+	<select id="bringPost" parameterType="String" resultType="post">
+	SELECT * FROM NotePost Where postCode like #{noteCode} and usable=true order by postIndex asc
+	</select>
+	
+	<select id="bringDisabledPost" parameterType="String" resultType="post">
+	SELECT* FROM NotePost Where postCode like #{appendCode} and usable=false order by postCode asc limit 1
+	</select>
+	<insert id="makePost" parameterType="post">
+	INSERT INTO NotePost values(
+	#{postCode},
+	#{postTitle},
+	#{postSubtitle},
+	#{postContents},
+	#{postColor},
+	#{postIndex},
+	default,
+	default)
+	</insert>
+	<update id="replaceNewPost" parameterType="post">
+	UPDATE NotePost SET
+	postTitle=#{postTitle},
+	postSubtitle=#{postSubtitle},
+	postContents=#{postContents},
+	postColor=#{postColor},
+	postIndex=#{postIndex},
+	usable=true,
+	recentDate=default
+	WHERE postCode=#{postCode}
+	</update>
+	<update id="disablePost" parameterType="post">
+	UPDATE NotePost Set
+	usable=false WHERE postCode=#{postCode}
+	</update>
+	<delete id="deletePost" parameterType="post">
+	DELETE FROM NotePost WHERE postCode=#{postCode}
+	</delete>
+	<update id="editPost" parameterType="post">
+	UPDATE NotePost Set 	
+	postTitle=#{postTitle},
+	postSubtitle=#{postSubtitle},
+	postContents=#{postContents},
+	postColor=#{postColor},
+	postIndex=#{postIndex},
+	recentDate=default
+	WHERE postCode=#{postCode}
+	</update>
+</mapper>

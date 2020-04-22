@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+		<setting name="cacheEnabled" value="false" />
+        <setting name="jdbcTypeForNull" value="NULL" />
+	</settings>	
+	<typeAliases> 
+		<typeAlias alias="member" type="com.yeri.partynote.dto.MemberDTO"/><!--여기에 패키지 이름 쓰기-->
+		<typeAlias alias="note" type="com.yeri.partynote.dto.NoteDTO"/>
+		<typeAlias alias="post" type="com.yeri.partynote.dto.PostDTO"/>
+	</typeAliases>
+	
+</configuration>
