@@ -39,7 +39,6 @@
 	<select id="bringPost" parameterType="String" resultType="post">
 	SELECT * FROM NotePost Where postCode like #{noteCode} and usable=true order by postIndex asc
 	</select>
-	
 	<select id="bringDisabledPost" parameterType="String" resultType="post">
 	SELECT* FROM NotePost Where postCode like #{appendCode} and usable=false order by postCode asc limit 1
 	</select>
@@ -81,6 +80,12 @@
 	postIndex=#{postIndex},
 	usable=true,
 	recentDate=default
+	WHERE postCode=#{postCode}
+	</update>
+	
+	<update id="updateNoteIndex" parameterType="post">
+	UPDATE NotePost Set
+	postIndex=#{postIndex}
 	WHERE postCode=#{postCode}
 	</update>
 </mapper>
