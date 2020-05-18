@@ -37,7 +37,7 @@
 	</update>
 	
 	<select id="bringPost" parameterType="String" resultType="post">
-	SELECT * FROM NotePost Where postCode like #{noteCode} and usable=true order by postIndex asc
+	SELECT * FROM NotePost Where postCode like #{noteCode} and usable=true and booked=false order by postIndex asc
 	</select>
 	<select id="bringDisabledPost" parameterType="String" resultType="post">
 	SELECT* FROM NotePost Where postCode like #{appendCode} and usable=false order by postCode asc limit 1
@@ -51,6 +51,7 @@
 	#{postColor},
 	#{postIndex},
 	default,
+	default,
 	default)
 	</insert>
 	<update id="replaceNewPost" parameterType="post">
@@ -61,6 +62,7 @@
 	postColor=#{postColor},
 	postIndex=#{postIndex},
 	usable=true,
+	booked=default,
 	recentDate=default
 	WHERE postCode=#{postCode}
 	</update>

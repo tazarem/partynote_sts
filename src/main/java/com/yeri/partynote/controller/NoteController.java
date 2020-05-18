@@ -23,6 +23,7 @@ public class NoteController {
 	@Autowired 
 	MainService ms;
 	
+	//Note
 	@RequestMapping(value = "/bringNoteIndex", method = RequestMethod.GET)
 	public List<NoteDTO> bringNoteIndex(String userId) {
 		//노트 목록을 불러옵니다.
@@ -55,6 +56,7 @@ public class NoteController {
 		
 	return answer;}
 	
+	// Post
 	@RequestMapping(value = "/bringPost", method = RequestMethod.POST)
 	public List<PostDTO> bringPost(@RequestBody String noteCode) {
 		
@@ -81,5 +83,42 @@ public class NoteController {
 	public int editPost(@RequestBody PostDTO post) {
 		System.out.println("포스트 수정 : " + post);
 		int answer = ms.editPost(post);
+	return answer;}
+	
+	// Book
+	@RequestMapping(value = "/makeBook", method = RequestMethod.POST)
+	public int makeBook(@RequestBody PostDTO post) {
+		System.out.println("책 제작");
+		int answer = 0;
+	return answer;}
+	@RequestMapping(value = "/addPageBook", method = RequestMethod.POST)
+	public int addPageBook(@RequestBody PostDTO post) {
+		System.out.println("페이지 추가");
+		int answer = 0;
+	return answer;}
+	@RequestMapping(value = "/editBookIndex", method = RequestMethod.POST)
+	public int editBookIndex(@RequestBody PostDTO post) {
+		System.out.println("책 페이지 순서 업데이트");
+		int answer = 0;
+	return answer;}
+	@RequestMapping(value = "/editBookPage", method = RequestMethod.POST)
+	public int editBookPage(@RequestBody PostDTO post) {
+		System.out.println("책 속 게시물 편집");
+		int answer = 0;
+	return answer;}
+	@RequestMapping(value = "/deleteBookPage", method = RequestMethod.POST)
+	public int deleteBookPage(@RequestBody PostDTO post) {
+		System.out.println("책 속 게시물 삭제");
+		int answer = 0;
+	return answer;}
+	@RequestMapping(value = "/deleteWholeBook", method = RequestMethod.POST)
+	public int deleteWholeBook(@RequestBody PostDTO post) {
+		System.out.println("책 통쨰로 삭제");
+		int answer = 0;
+	return answer;}
+	@RequestMapping(value = "/releaseBook", method = RequestMethod.POST)
+	public int releaseBook(@RequestBody PostDTO post) {
+		System.out.println("책 해제");
+		int answer = 0;
 	return answer;}
 }
