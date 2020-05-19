@@ -8,6 +8,7 @@ import com.yeri.partynote.dto.PostDTO;
 import com.yeri.partynote.service.MainService;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -87,8 +88,11 @@ public class NoteController {
 	
 	// Book
 	@RequestMapping(value = "/makeBook", method = RequestMethod.POST)
-	public int makeBook(@RequestBody PostDTO post) {
+	public int makeBook(@RequestBody Map<String, PostDTO> param) {
 		System.out.println("책 제작");
+		PostDTO fp = param.get("fp");
+		PostDTO sp = param.get("sp");
+		ms.makeBook(fp,sp);
 		int answer = 0;
 	return answer;}
 	@RequestMapping(value = "/addPageBook", method = RequestMethod.POST)

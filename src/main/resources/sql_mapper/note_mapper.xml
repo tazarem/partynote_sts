@@ -84,10 +84,15 @@
 	recentDate=default
 	WHERE postCode=#{postCode}
 	</update>
-	
 	<update id="updateNoteIndex" parameterType="post">
 	UPDATE NotePost Set
 	postIndex=#{postIndex}
 	WHERE postCode=#{postCode}
 	</update>
+	<select id="selectUnusedBook" parameterType="String">
+	SELECT bookCode FROM Book where bookCode like #{noteCode} and usable=false
+	</select>
+		<select id="selectLatestBook" parameterType="String">
+	SELECT bookCode FROM Book where bookCode like #{noteCode} order by bookCode desc limit 1
+	</select>	
 </mapper>

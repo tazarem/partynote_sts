@@ -102,6 +102,21 @@ public class MainDatabase {
 
 		return sql.update("Note.editPost",post);
 	}
+	public String selectUnusedBookCode(String noteCode) {
+		noteCode += "%";
+		return sql.selectOne("Note.selectUnusedBook",noteCode);
+	}
+	public int makeBook(PostDTO fp, PostDTO sp) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public String selectLatestBookCode(String noteCode) {
+		noteCode += "%";
+		return sql.selectOne("Note.selectLatestBook",noteCode);
+	}
+
+
 
 
 	

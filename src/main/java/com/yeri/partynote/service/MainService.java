@@ -134,7 +134,7 @@ public class MainService {
 	public List<PostDTO> bringPost(String noteCode) {
 				
 		List<PostDTO> posts = db.bringPost(noteCode);
-			
+		
 		return posts;
 	}
 
@@ -214,6 +214,44 @@ public class MainService {
 		
 		return answer;
 	}
+
+	public int makeBook(PostDTO fp, PostDTO sp) {
+		
+		/* 1. DB에서 이 계정의 이 노트에서 생성된  book이 있는지 셀렉트.
+		 * 2. 비활성화된 book 이 있다면 재활용, 없다면 새로 생성
+		 * 3. 부여된 번호로 makeBook
+		 * note => userId_000
+		 * bookCode => userId_000_b_00 (노트코드에 _b_00 꼴)
+		 * */
+//		searching BookCode
+		int answer = 0;
+		String postCode=fp.getPostCode();
+		String noteCode = postCode.substring(0, postCode.length()-5);
+		System.out.println(noteCode);
+		String usableBookCode = db.selectUnusedBookCode(noteCode);
+		
+		if(usableBookCode==null) { // 비활성화 된 게 없다면 그 다음 번호로 새로 생성
+		String latestBookCode = db.selectLatestBookCode(noteCode);
+		if(latestBookCode==null) {
+			//000 만들고
+		}else {
+			int bookCount=Integer.parseInt(latestBookCode.substring(postCode.length()-2,postCode.length()));
+			int bookNumb=bookCount+1;
+			String bookCode;
+			if(bookNumb<10) {
+				bookCode = noteCode+"_b_0"+bookNumb;
+			}else {
+				bookCode = noteCode+"_b_"+bookNumb;
+			}
+//			answer = makeBook(newBook)북코드 넣고 첫번째 페이지랑 두번째 페이지 넣어야함.
+			
+		}
+		}else { // 아니라면 재활용
+			
+		}
+		int answer = db.makeBook(fp,sp);
+		
+	return answer;}
 
 
 
