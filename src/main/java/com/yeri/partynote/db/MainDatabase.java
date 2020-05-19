@@ -6,6 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.yeri.partynote.dto.BookDTO;
+import com.yeri.partynote.dto.BookPageDTO;
 import com.yeri.partynote.dto.MemberDTO;
 import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.dto.PostDTO;
@@ -106,15 +108,27 @@ public class MainDatabase {
 		noteCode += "%";
 		return sql.selectOne("Note.selectUnusedBook",noteCode);
 	}
-	public int makeBook(PostDTO fp, PostDTO sp) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int makeBook(BookDTO newBook) {
+
+		return sql.insert("Note.makeBook", newBook);
 	}
 
 	public String selectLatestBookCode(String noteCode) {
 		noteCode += "%";
 		return sql.selectOne("Note.selectLatestBook",noteCode);
 	}
+
+	public int addBookPage(BookPageDTO addPage) {
+		
+	return sql.insert("Note.addBookPage", addPage);}
+
+	public int updatePostBooked(String postCode) {
+		
+	return sql.update("Note.updatePostBooked", postCode);}
+
+	public int addCountWholeBookPage(String bookCode) {
+		
+	return sql.update("Note.addCountWholeBookPage",bookCode);}
 
 
 

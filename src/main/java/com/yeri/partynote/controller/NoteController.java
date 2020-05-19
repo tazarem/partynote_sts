@@ -2,6 +2,7 @@ package com.yeri.partynote.controller;
 
 
 
+import com.yeri.partynote.dto.BookDTO;
 import com.yeri.partynote.dto.MemberDTO;
 import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.dto.PostDTO;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins="http://localhost:4040") //vue 가 돌아가는 서버의 크로스 오리진 허용
@@ -88,13 +90,18 @@ public class NoteController {
 	
 	// Book
 	@RequestMapping(value = "/makeBook", method = RequestMethod.POST)
-	public int makeBook(@RequestBody Map<String, PostDTO> param) {
+	public int makeBook(@RequestBody BookDTO newBook) {
 		System.out.println("책 제작");
-		PostDTO fp = param.get("fp");
-		PostDTO sp = param.get("sp");
-		ms.makeBook(fp,sp);
-		int answer = 0;
+		System.out.println(newBook);
+		int answer = ms.makeBook(newBook);
 	return answer;}
+	
+	@RequestMapping(value = "/bringBook", method = RequestMethod.POST)
+	public void bringBook(@RequestBody PostDTO post) {
+		System.out.println("책들 가져오기");
+//		int answer = ms;
+//	return answer;
+	}
 	@RequestMapping(value = "/addPageBook", method = RequestMethod.POST)
 	public int addPageBook(@RequestBody PostDTO post) {
 		System.out.println("페이지 추가");

@@ -89,10 +89,30 @@
 	postIndex=#{postIndex}
 	WHERE postCode=#{postCode}
 	</update>
-	<select id="selectUnusedBook" parameterType="String">
+	<select id="selectUnusedBook" parameterType="String" resultType="String">
 	SELECT bookCode FROM Book where bookCode like #{noteCode} and usable=false
 	</select>
-		<select id="selectLatestBook" parameterType="String">
+	<select id="selectLatestBook" parameterType="String" resultType="String">
 	SELECT bookCode FROM Book where bookCode like #{noteCode} order by bookCode desc limit 1
-	</select>	
+	</select>
+	<insert id="makeBook" parameterType="book">
+	INSERT INTO Book values(#{bookCode},#{bookTitle},#{bookPage},default,default)
+	</insert>
+	<insert id="addBookPage" parameterType="bookpage">
+	INSERT INTO BookPage values(#{bookCode},#{pageIndex},#{postCode},default)
+	</insert>
+	<update id="updatePostBooked" parameterType="String">
+	UPDATE NotePost Set booked=true where postCode=#{postCode}
+	</update>
+	<update id="addCountWholeBookPage" parameterType="String">
+	UPDATE Book Set bookPage=bookPage+1 where bookCode=#{bookCode}
+	</update>
+	
+	<select id="bringBook" parameterType="String" resultType="book">
+	SELECT * from book where bookCode like #{noteCode} order by recentDate desc
+	</select>
+	<select id="bringBookPages" parameterType="String">
+	SELECT postCode from bookpage where bookCode=#{bookCode} order by pageIndex asc
+	</select>
+
 </mapper>

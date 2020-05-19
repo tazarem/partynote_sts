@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yeri.partynote.db.MainDatabase;
+import com.yeri.partynote.dto.BookDTO;
+import com.yeri.partynote.dto.BookPageDTO;
 import com.yeri.partynote.dto.MemberDTO;
 import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.dto.PostDTO;
@@ -215,42 +217,94 @@ public class MainService {
 		return answer;
 	}
 
-	public int makeBook(PostDTO fp, PostDTO sp) {
+	public int makeBook(BookDTO newBook) {
 		
 		/* 1. DB에서 이 계정의 이 노트에서 생성된  book이 있는지 셀렉트.
 		 * 2. 비활성화된 book 이 있다면 재활용, 없다면 새로 생성
 		 * 3. 부여된 번호로 makeBook
 		 * note => userId_000
-		 * bookCode => userId_000_b_00 (노트코드에 _b_00 꼴)
+		 * bookCode => userId_000_b_00 ([노트코드]_b_00 꼴)
 		 * */
-//		searching BookCode
+
+		List<BookPageDTO> basePosts = newBook.getPosts(); //리팩토링하기
+		
 		int answer = 0;
-		String postCode=fp.getPostCode();
+		int answer2 = 0;
+
+		String postCode = basePosts.get(1).getPostCode();
+		
 		String noteCode = postCode.substring(0, postCode.length()-5);
 		System.out.println(noteCode);
-		String usableBookCode = db.selectUnusedBookCode(noteCode);
+		String usableBookCode = db.selectUnusedBookCode(noteCode); //searching usable bookcode
 		
 		if(usableBookCode==null) { // 비활성화 된 게 없다면 그 다음 번호로 새로 생성
 		String latestBookCode = db.selectLatestBookCode(noteCode);
-		if(latestBookCode==null) {
-			//000 만들고
-		}else {
-			int bookCount=Integer.parseInt(latestBookCode.substring(postCode.length()-2,postCode.length()));
-			int bookNumb=bookCount+1;
-			String bookCode;
-			if(bookNumb<10) {
-				bookCode = noteCode+"_b_0"+bookNumb;
+		String bookCode=null;
+			if(latestBookCode==null) {
+				//00 만들고
+				bookCode = noteCode+"_b_00";
+				System.out.println("새 책 생성");
+
 			}else {
-				bookCode = noteCode+"_b_"+bookNumb;
+				int bookCount=Integer.parseInt(latestBookCode.substring(postCode.length()-2,postCode.length()));
+				int bookNumb=bookCount+1;
+				if(bookNumb<10) {
+					bookCode = noteCode+"_b_0"+bookNumb;
+				}else if(bookNumb<100){
+					bookCode = noteCode+"_b_"+bookNumb;
+				}else {
+					System.out.println("더 이상 book을 생성할 수 없습니다.");
+				}
 			}
-//			answer = makeBook(newBook)북코드 넣고 첫번째 페이지랑 두번째 페이지 넣어야함.
 			
-		}
+			if(bookCode!=null) {
+			newBook.setBookCode(bookCode);
+			answer = db.makeBook(newBook);//책 생성
+			System.out.println("책 생성 완료 : "+answer);
+			}
+			
 		}else { // 아니라면 재활용
-			
+			System.out.println("북코드 재활용");
+			newBook.setBookCode(usableBookCode);
+			answer = makeBook(newBook);
 		}
-		int answer = db.makeBook(fp,sp);
+		if(answer!=0) { //겹친 두 개의 포스트로 책 기본 페이지 생성하기
+			System.out.println("책 기본 페이지 생성..");
+			int i=0;
+			for(BookPageDTO item : basePosts) {
+				item.setBookCode(newBook.getBookCode());
+				item.setPageIndex(i);
+				i++;
+			}
+			BookPageDTO firstPage = new BookPageDTO(); //이부분 전부 리팩토링하기 
+			BookPageDTO SecondPage = new BookPageDTO(); //
+			firstPage.setBookCode(newBook.getBookCode());
+			firstPage.setPageIndex(0); // set this post's bookpage
+			firstPage.setPostCode(newBook.getFp().getPostCode());
+			SecondPage.setBookCode(newBook.getBookCode());
+			SecondPage.setPageIndex(1); // set this post's bookpage
+			SecondPage.setPostCode(newBook.getSp().getPostCode());
+			addBookPage(firstPage);
+			addBookPage(SecondPage);
+			answer2= 1;
+		}
+
 		
+	return answer2;}
+	
+	public int addBookPage(BookPageDTO addPage){
+		int answer=0;
+		/*INSERT INTO bookpage values(#{bookCode},#{postIndex},#{postCode},default)
+		 * 인서트 쳐놓고 해당되는 postCode booked로 바꾸기
+		 * UPDATE NotePost Set booked=1 where postCode=#{postCode}*/
+		db.addBookPage(addPage);
+		System.out.println("will Booked: "+addPage.getPostCode());
+		db.updatePostBooked(addPage.getPostCode());
+	return answer;}
+	
+	public int addCountWholeBookPage(String bookCode) {
+		int answer=0;
+		db.addCountWholeBookPage(bookCode);
 	return answer;}
 
 
