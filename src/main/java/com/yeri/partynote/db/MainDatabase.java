@@ -130,6 +130,13 @@ public class MainDatabase {
 		
 	return sql.update("Note.addCountWholeBookPage",bookCode);}
 
+	public List<BookDTO> bringBooks(String noteCode) {
+
+		noteCode +="%";
+		
+		return sql.selectList("Note.bringBooks", noteCode);
+	}
+
 
 
 

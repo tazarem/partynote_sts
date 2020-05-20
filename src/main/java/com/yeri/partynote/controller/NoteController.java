@@ -95,38 +95,48 @@ public class NoteController {
 		System.out.println(newBook);
 		int answer = ms.makeBook(newBook);
 	return answer;}
-	
-	@RequestMapping(value = "/bringBook", method = RequestMethod.POST)
-	public void bringBook(@RequestBody PostDTO post) {
+	@RequestMapping(value = "/bringBooks", method = RequestMethod.POST)
+	public List<BookDTO> bringBooks(@RequestBody String noteCode) {
 		System.out.println("책들 가져오기");
-//		int answer = ms;
-//	return answer;
-	}
-	@RequestMapping(value = "/addPageBook", method = RequestMethod.POST)
+		List<BookDTO> books = ms.bringBooks(noteCode.substring(0,noteCode.length()-1));
+	return books;}
+	
+	@RequestMapping(value = "/addPageToBook", method = RequestMethod.POST)
 	public int addPageBook(@RequestBody PostDTO post) {
 		System.out.println("페이지 추가");
 		int answer = 0;
 	return answer;}
+	
+	@RequestMapping(value = "/addPagesToBook", method = RequestMethod.POST)
+	public int addPageBook(@RequestBody List<PostDTO> posts) {
+		System.out.println("여러 페이지 추가");
+		int answer = 0;
+	return answer;}
+	
 	@RequestMapping(value = "/editBookIndex", method = RequestMethod.POST)
 	public int editBookIndex(@RequestBody PostDTO post) {
 		System.out.println("책 페이지 순서 업데이트");
 		int answer = 0;
 	return answer;}
+	
 	@RequestMapping(value = "/editBookPage", method = RequestMethod.POST)
 	public int editBookPage(@RequestBody PostDTO post) {
 		System.out.println("책 속 게시물 편집");
 		int answer = 0;
 	return answer;}
+	
 	@RequestMapping(value = "/deleteBookPage", method = RequestMethod.POST)
 	public int deleteBookPage(@RequestBody PostDTO post) {
 		System.out.println("책 속 게시물 삭제");
 		int answer = 0;
 	return answer;}
+	
 	@RequestMapping(value = "/deleteWholeBook", method = RequestMethod.POST)
 	public int deleteWholeBook(@RequestBody PostDTO post) {
 		System.out.println("책 통쨰로 삭제");
 		int answer = 0;
 	return answer;}
+	
 	@RequestMapping(value = "/releaseBook", method = RequestMethod.POST)
 	public int releaseBook(@RequestBody PostDTO post) {
 		System.out.println("책 해제");

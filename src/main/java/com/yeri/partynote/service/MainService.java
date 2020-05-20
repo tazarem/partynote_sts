@@ -272,20 +272,13 @@ public class MainService {
 			System.out.println("책 기본 페이지 생성..");
 			int i=0;
 			for(BookPageDTO item : basePosts) {
+				System.out.println("item : "+item);
 				item.setBookCode(newBook.getBookCode());
 				item.setPageIndex(i);
+				addBookPage(item);
 				i++;
 			}
-			BookPageDTO firstPage = new BookPageDTO(); //이부분 전부 리팩토링하기 
-			BookPageDTO SecondPage = new BookPageDTO(); //
-			firstPage.setBookCode(newBook.getBookCode());
-			firstPage.setPageIndex(0); // set this post's bookpage
-			firstPage.setPostCode(newBook.getFp().getPostCode());
-			SecondPage.setBookCode(newBook.getBookCode());
-			SecondPage.setPageIndex(1); // set this post's bookpage
-			SecondPage.setPostCode(newBook.getSp().getPostCode());
-			addBookPage(firstPage);
-			addBookPage(SecondPage);
+			
 			answer2= 1;
 		}
 
@@ -306,6 +299,13 @@ public class MainService {
 		int answer=0;
 		db.addCountWholeBookPage(bookCode);
 	return answer;}
+
+	public List<BookDTO> bringBooks(String noteCode) {
+		
+		List<BookDTO> books = db.bringBooks(noteCode);
+		
+		return books;
+	}
 
 
 

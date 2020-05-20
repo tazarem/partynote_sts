@@ -108,7 +108,7 @@
 	UPDATE Book Set bookPage=bookPage+1 where bookCode=#{bookCode}
 	</update>
 	
-	<select id="bringBook" parameterType="String" resultType="book">
+	<select id="bringBooks" parameterType="String" resultType="book">
 	SELECT * from book where bookCode like #{noteCode} order by recentDate desc
 	</select>
 	<select id="bringBookPages" parameterType="String">
