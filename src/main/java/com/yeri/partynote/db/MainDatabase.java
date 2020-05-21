@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.yeri.partynote.dto.BookDTO;
-import com.yeri.partynote.dto.BookPageDTO;
 import com.yeri.partynote.dto.MemberDTO;
 import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.dto.PostDTO;
@@ -73,12 +72,16 @@ public class MainDatabase {
 		return sql.update("Note.allDeletePost",note);
 	}
 	
-	public List<PostDTO> bringPost(String noteCode) {
+	public List<PostDTO> bringPost(String noteCode) {//프론트엔드 출력용 bringPost
 		System.out.println("bringPost : "+noteCode);
 		noteCode += '%';
 		return sql.selectList("Note.bringPost", noteCode);
 	}
-
+	public List<PostDTO> bringPostToMakeNewPost(String noteCode) {//포스트 코드생성기로 코드 만들때 쓰는 bringPost
+		System.out.println("bringPost : "+noteCode);
+		noteCode += '%';
+		return sql.selectList("Note.bringPostToMakeNewPost", noteCode);
+	}
 	public PostDTO bringDisabledPost(String appendCode) {
 		appendCode += '%'; //노트 코드가 들어갑니다.
 		
@@ -104,6 +107,11 @@ public class MainDatabase {
 
 		return sql.update("Note.editPost",post);
 	}
+	
+	public int updatePostIndex(List<PostDTO> posts) {
+		return sql.update("Note.updatePostIndex", posts);
+	}
+	
 	public String selectUnusedBookCode(String noteCode) {
 		noteCode += "%";
 		return sql.selectOne("Note.selectUnusedBook",noteCode);
@@ -118,17 +126,13 @@ public class MainDatabase {
 		return sql.selectOne("Note.selectLatestBook",noteCode);
 	}
 
-	public int addBookPage(BookPageDTO addPage) {
+	public int updatePostBooked(PostDTO post) {//페이지 여부 및 페이지 상태를 업데이트
 		
-	return sql.insert("Note.addBookPage", addPage);}
+	return sql.update("Note.updatePostBooked", post);}
 
-	public int updatePostBooked(String postCode) {
+	public int addCountWholeBookPage(BookDTO book) {
 		
-	return sql.update("Note.updatePostBooked", postCode);}
-
-	public int addCountWholeBookPage(String bookCode) {
-		
-	return sql.update("Note.addCountWholeBookPage",bookCode);}
+	return sql.update("Note.addCountWholeBookPage",book);}
 
 	public List<BookDTO> bringBooks(String noteCode) {
 
@@ -136,6 +140,17 @@ public class MainDatabase {
 		
 		return sql.selectList("Note.bringBooks", noteCode);
 	}
+
+	public List<PostDTO> bringBookPages(String bookCode) {
+
+		return sql.selectList("Note.bringBookPages", bookCode);
+	}
+
+
+
+
+
+
 
 
 

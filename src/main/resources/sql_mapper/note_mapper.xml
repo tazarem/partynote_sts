@@ -37,7 +37,10 @@
 	</update>
 	
 	<select id="bringPost" parameterType="String" resultType="post">
-	SELECT * FROM NotePost Where postCode like #{noteCode} and usable=true and booked=false order by postIndex asc
+	SELECT * FROM NotePost Where postCode like #{noteCode} and usable=true and booked=0 order by postIndex asc
+	</select>
+	<select id="bringPostToMakeNewPost" parameterType="String" resultType="post">
+	SELECT * FROM NotePost Where postCode like #{noteCode} and usable=true order by postCode asc
 	</select>
 	<select id="bringDisabledPost" parameterType="String" resultType="post">
 	SELECT* FROM NotePost Where postCode like #{appendCode} and usable=false order by postCode asc limit 1
@@ -52,6 +55,8 @@
 	#{postIndex},
 	default,
 	default,
+	default,
+	default,
 	default)
 	</insert>
 	<update id="replaceNewPost" parameterType="post">
@@ -63,9 +68,20 @@
 	postIndex=#{postIndex},
 	usable=true,
 	booked=default,
+	bookCode=default,
+	pageIndex=default,
 	recentDate=default
 	WHERE postCode=#{postCode}
 	</update>
+	
+	<update id="updatePostIndex" parameterType="java.util.List">
+	 	UPDATE NotePost Set
+	 	<foreach collection="list" item="item" separator=",">
+    	postIndex=#{item.postIndex}
+    	where postCode=#{item.postCode}
+    	</foreach>
+	</update>
+	
 	<update id="disablePost" parameterType="post">
 	UPDATE NotePost Set
 	usable=false WHERE postCode=#{postCode}
@@ -96,23 +112,25 @@
 	SELECT bookCode FROM Book where bookCode like #{noteCode} order by bookCode desc limit 1
 	</select>
 	<insert id="makeBook" parameterType="book">
-	INSERT INTO Book values(#{bookCode},#{bookTitle},#{bookPage},default,default)
+	INSERT INTO Book values(#{bookCode},#{bookTitle},2,default,default)
 	</insert>
-	<insert id="addBookPage" parameterType="bookpage">
-	INSERT INTO BookPage values(#{bookCode},#{pageIndex},#{postCode},default)
-	</insert>
-	<update id="updatePostBooked" parameterType="String">
-	UPDATE NotePost Set booked=true where postCode=#{postCode}
+	
+	<update id="updatePostBooked" parameterType="post">
+	UPDATE NotePost Set
+	booked=true,
+	bookCode=#{bookCode},
+	pageIndex=#{pageIndex},
+	recentDate=default
+	where postCode=#{postCode}
 	</update>
-	<update id="addCountWholeBookPage" parameterType="String">
-	UPDATE Book Set bookPage=bookPage+1 where bookCode=#{bookCode}
+	<update id="addCountWholeBookPage" parameterType="book">
+	UPDATE Book Set bookPage=#{bookPage} where bookCode=#{bookCode}
 	</update>
 	
 	<select id="bringBooks" parameterType="String" resultType="book">
 	SELECT * from book where bookCode like #{noteCode} order by recentDate desc
 	</select>
-	<select id="bringBookPages" parameterType="String">
-	SELECT postCode from bookpage where bookCode=#{bookCode} order by pageIndex asc
+	<select id="bringBookPages" parameterType="String" resultType="post">
+	SELECT*FROM notepost where bookCode=#{bookCode} order by pageIndex asc
 	</select>
-
 </mapper>

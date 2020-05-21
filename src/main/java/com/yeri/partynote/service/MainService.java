@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.yeri.partynote.db.MainDatabase;
 import com.yeri.partynote.dto.BookDTO;
-import com.yeri.partynote.dto.BookPageDTO;
 import com.yeri.partynote.dto.MemberDTO;
 import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.dto.PostDTO;
@@ -149,7 +148,8 @@ public class MainService {
 		
 		if(disabledPost==null) {//비활성화 된 게 없다
 			//기존 것으로 새로 만들기.
-			List<PostDTO> posts = db.bringPost(appendCode);
+			List<PostDTO> posts = db.bringPostToMakeNewPost(appendCode);
+			System.out.println("새로 만듭니다");
 			if(posts.size()==0) {// 기존에 만들어둔것도 없다면
 				resultCode=appendCode+"_0000";
 				System.out.println(resultCode);
@@ -157,9 +157,11 @@ public class MainService {
 				//코드메이커로 돌리기
 				int key = (posts.size()-1);
 				String lastCode = (posts.get(key)).getPostCode();
+				
 				String codeNumb = lastCode.substring(appendCode.length()+1); //수만 추출 완료
 				resultCode = postCodeMaker(codeNumb,appendCode);
 				}
+				System.out.println(resultCode);
 				newPost.setPostCode(resultCode);
 				int i =db.makePost(newPost);
 				if(i==1) {
@@ -216,7 +218,12 @@ public class MainService {
 		
 		return answer;
 	}
+	public int updatePostIndex(List<PostDTO> posts) {
 
+		int answer = db.updatePostIndex(posts);
+		
+		return answer;
+	}
 	public int makeBook(BookDTO newBook) {
 		
 		/* 1. DB에서 이 계정의 이 노트에서 생성된  book이 있는지 셀렉트.
@@ -226,7 +233,7 @@ public class MainService {
 		 * bookCode => userId_000_b_00 ([노트코드]_b_00 꼴)
 		 * */
 
-		List<BookPageDTO> basePosts = newBook.getPosts(); //리팩토링하기
+		List<PostDTO> basePosts = newBook.getPosts(); //리팩토링하기
 		
 		int answer = 0;
 		int answer2 = 0;
@@ -271,7 +278,7 @@ public class MainService {
 		if(answer!=0) { //겹친 두 개의 포스트로 책 기본 페이지 생성하기
 			System.out.println("책 기본 페이지 생성..");
 			int i=0;
-			for(BookPageDTO item : basePosts) {
+			for(PostDTO item : basePosts) {
 				System.out.println("item : "+item);
 				item.setBookCode(newBook.getBookCode());
 				item.setPageIndex(i);
@@ -281,31 +288,35 @@ public class MainService {
 			
 			answer2= 1;
 		}
-
 		
 	return answer2;}
 	
-	public int addBookPage(BookPageDTO addPage){
+	public int addBookPage(PostDTO addPage){
 		int answer=0;
 		/*INSERT INTO bookpage values(#{bookCode},#{postIndex},#{postCode},default)
 		 * 인서트 쳐놓고 해당되는 postCode booked로 바꾸기
-		 * UPDATE NotePost Set booked=1 where postCode=#{postCode}*/
-		db.addBookPage(addPage);
-		System.out.println("will Booked: "+addPage.getPostCode());
-		db.updatePostBooked(addPage.getPostCode());
+		 * 페이지랑 북코드도 업데이트하기*/
+		db.updatePostBooked(addPage);
 	return answer;}
 	
-	public int addCountWholeBookPage(String bookCode) {
+	public int addCountWholeBookPage(BookDTO book) {//bookpage(페이지 총수)도 업데이트치기
 		int answer=0;
-		db.addCountWholeBookPage(bookCode);
+		db.addCountWholeBookPage(book);
 	return answer;}
 
 	public List<BookDTO> bringBooks(String noteCode) {
 		
 		List<BookDTO> books = db.bringBooks(noteCode);
-		
+		//book 내부의 페이지들 가져오기
+		for(BookDTO book : books) {
+			String bookCode = book.getBookCode();
+			book.setPosts(db.bringBookPages(bookCode));
+			System.out.println("책 페이지 가져오기 : "+book.getPosts());
+		}
 		return books;
 	}
+
+
 
 
 

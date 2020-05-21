@@ -11,7 +11,6 @@
 		<typeAlias alias="note" type="com.yeri.partynote.dto.NoteDTO"/>
 		<typeAlias alias="post" type="com.yeri.partynote.dto.PostDTO"/>
 		<typeAlias alias="book" type="com.yeri.partynote.dto.BookDTO"/>
-		<typeAlias alias="bookpage" type="com.yeri.partynote.dto.BookPageDTO"/>
 	</typeAliases>
 	
 </configuration>

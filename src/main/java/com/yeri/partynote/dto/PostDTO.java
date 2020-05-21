@@ -9,7 +9,9 @@ public class PostDTO {
 	postTitle,
 	postSubtitle,
 	postContents,
-	postColor;
-	private int postIndex;
+	postColor,
+	bookCode;
+	private boolean usable,booked;
+	private int postIndex, pageIndex;
 	
 }

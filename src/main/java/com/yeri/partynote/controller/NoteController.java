@@ -88,6 +88,12 @@ public class NoteController {
 		int answer = ms.editPost(post);
 	return answer;}
 	
+	@RequestMapping(value = "/updatePostIndex", method = RequestMethod.POST)
+	public int updatePostIndex(@RequestBody List<PostDTO> posts) {
+		System.out.println("포스트 인덱스 보정");
+		int answer = ms.updatePostIndex(posts);
+	return answer;}
+	
 	// Book
 	@RequestMapping(value = "/makeBook", method = RequestMethod.POST)
 	public int makeBook(@RequestBody BookDTO newBook) {
