@@ -146,6 +146,11 @@ public class MainDatabase {
 		return sql.selectList("Note.bringBookPages", bookCode);
 	}
 
+	public int bringBookIndex(String bookCode) {
+
+		return sql.selectOne("Note.bringLatestBookIndex", bookCode);
+	}
+
 
 
 

@@ -110,7 +110,7 @@ public class NoteController {
 	@RequestMapping(value = "/addPageToBook", method = RequestMethod.POST)
 	public int addPageBook(@RequestBody PostDTO post) {
 		System.out.println("페이지 추가");
-		int answer = 0;
+		int answer = ms.addBookPageAndIndex(post);
 	return answer;}
 	
 	@RequestMapping(value = "/addPagesToBook", method = RequestMethod.POST)

@@ -133,4 +133,7 @@
 	<select id="bringBookPages" parameterType="String" resultType="post">
 	SELECT*FROM notepost where bookCode=#{bookCode} order by pageIndex asc
 	</select>
+	<select id="bringLatestBookIndex" parameterType="String" resultType="java.lang.Integer">
+	select pageIndex from notepost Where bookCode=#{bookCode} order by pageIndex desc limit 1
+	</select>
 </mapper>

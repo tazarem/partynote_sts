@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 public class BookDTO {
 
-	private String bookCode,bookTitle,bookPage;
+	private String bookCode,bookTitle;
+	int bookPage;
 	private List<PostDTO> posts;
 }

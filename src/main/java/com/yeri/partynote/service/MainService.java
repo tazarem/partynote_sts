@@ -291,23 +291,31 @@ public class MainService {
 		
 	return answer2;}
 	
+	public int addBookPageAndIndex(PostDTO post) {
+		int bIndex = db.bringBookIndex(post.getBookCode());
+		bIndex+=1;
+		post.setPageIndex(bIndex);
+		BookDTO book = new BookDTO();
+		book.setBookCode(post.getBookCode());
+		book.setBookPage(bIndex);
+		int i = addCountWholeBookPage(book);
+		System.out.println("updateBookPage : "+i);
+		int answer = addBookPage(post);
+		return answer;
+	}
+
 	public int addBookPage(PostDTO addPage){
 		int answer=0;
-		/*INSERT INTO bookpage values(#{bookCode},#{postIndex},#{postCode},default)
-		 * 인서트 쳐놓고 해당되는 postCode booked로 바꾸기
-		 * 페이지랑 북코드도 업데이트하기*/
 		db.updatePostBooked(addPage);
 	return answer;}
 	
-	public int addCountWholeBookPage(BookDTO book) {//bookpage(페이지 총수)도 업데이트치기
+	public int addCountWholeBookPage(BookDTO book) {//페이지 총수 업데이트
 		int answer=0;
 		db.addCountWholeBookPage(book);
 	return answer;}
 
 	public List<BookDTO> bringBooks(String noteCode) {
-		
 		List<BookDTO> books = db.bringBooks(noteCode);
-		//book 내부의 페이지들 가져오기
 		for(BookDTO book : books) {
 			String bookCode = book.getBookCode();
 			book.setPosts(db.bringBookPages(bookCode));
@@ -315,6 +323,8 @@ public class MainService {
 		}
 		return books;
 	}
+
+
 
 
 
