@@ -335,6 +335,14 @@ public class MainService {
 		return 0;
 	}
 
+	public int releaseBook(BookDTO book) {
+				String bookCode = book.getBookCode();
+				System.out.println("release this : " +bookCode);
+				int result = db.releaseBookedPost(bookCode);
+				int result2 = db.disableBook(bookCode);
+		return 0;
+	}
+
 
 
 

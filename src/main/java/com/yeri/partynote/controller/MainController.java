@@ -48,5 +48,13 @@ public class MainController {
 		boolean result = ms.existedId(userId);//true면 사용할 수 있음
 	return result;}
 	
+	@RequestMapping(value = "/bringProfile", method = RequestMethod.GET)
+	public int bringProfile(@RequestBody String userId) {
+		int answer = 0;
+	return answer;}
 	
+	@RequestMapping(value = "/editProfile", method = RequestMethod.POST)
+	public int editProfile(@RequestBody String userId) {
+		int answer = 0;
+	return answer;}
 }

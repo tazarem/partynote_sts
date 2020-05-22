@@ -150,4 +150,7 @@
 	<update id="disableBook" parameterType="String">
 	UPDATE book SET usable=0 where bookCode=#{bookCode}
 	</update>
+	<update id="releaseBookedPost" parameterType="String">
+	UPDATE notepost SET bookCode=null, booked=0, pageIndex=null where bookCode=#{bookCode}
+	</update>
 </mapper>

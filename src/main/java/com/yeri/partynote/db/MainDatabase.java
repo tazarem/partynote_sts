@@ -162,6 +162,11 @@ public class MainDatabase {
 		return sql.update("Note.disableBook", bookCode);
 	}
 
+	public int releaseBookedPost(String bookCode) {
+
+		return sql.update("Note.releaseBookedPost",bookCode);
+	}
+
 
 
 

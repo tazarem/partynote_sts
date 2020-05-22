@@ -138,15 +138,9 @@ public class NoteController {
 		int answer = ms.deleteBook(book);
 	return answer;}
 	
-	@RequestMapping(value = "/deleteWholeBook", method = RequestMethod.POST)
-	public int deleteWholeBook(@RequestBody PostDTO post) {
-		System.out.println("책 통쨰로 삭제");
-		int answer = 0;
-	return answer;}
-	
 	@RequestMapping(value = "/releaseBook", method = RequestMethod.POST)
-	public int releaseBook(@RequestBody PostDTO post) {
+	public int releaseBook(@RequestBody BookDTO book) {
 		System.out.println("책 해제");
-		int answer = 0;
+		int answer = ms.releaseBook(book);
 	return answer;}
 }
