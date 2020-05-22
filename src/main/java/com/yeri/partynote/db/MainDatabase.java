@@ -100,7 +100,7 @@ public class MainDatabase {
 
 	public int deletePost(PostDTO post) {
 		// sql.update("Note.disablePost",post)
-		return sql.delete("Note.deletePost",post);
+		return sql.update("Note.disablePost",post);
 	}
 
 	public int editPost(PostDTO post) {
@@ -120,7 +120,10 @@ public class MainDatabase {
 
 		return sql.insert("Note.makeBook", newBook);
 	}
+	public int remakeBook(BookDTO newBook) {
 
+		return sql.update("Note.remakeBook",newBook);
+	}
 	public String selectLatestBookCode(String noteCode) {
 		noteCode += "%";
 		return sql.selectOne("Note.selectLatestBook",noteCode);
@@ -150,6 +153,16 @@ public class MainDatabase {
 
 		return sql.selectOne("Note.bringLatestBookIndex", bookCode);
 	}
+
+	public int disableBookedPost(String bookCode) {
+		return sql.update("Note.disableBookedPost", bookCode);
+	}
+
+	public int disableBook(String bookCode) {
+		return sql.update("Note.disableBook", bookCode);
+	}
+
+
 
 
 

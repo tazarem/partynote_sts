@@ -235,6 +235,8 @@ public class MainService {
 
 		List<PostDTO> basePosts = newBook.getPosts(); //리팩토링하기
 		
+		System.out.println("초기 포스트 "+basePosts);
+		
 		int answer = 0;
 		int answer2 = 0;
 
@@ -273,7 +275,7 @@ public class MainService {
 		}else { // 아니라면 재활용
 			System.out.println("북코드 재활용");
 			newBook.setBookCode(usableBookCode);
-			answer = makeBook(newBook);
+			answer = db.remakeBook(newBook);
 		}
 		if(answer!=0) { //겹친 두 개의 포스트로 책 기본 페이지 생성하기
 			System.out.println("책 기본 페이지 생성..");
@@ -292,8 +294,8 @@ public class MainService {
 	return answer2;}
 	
 	public int addBookPageAndIndex(PostDTO post) {
-		int bIndex = db.bringBookIndex(post.getBookCode());
-		bIndex+=1;
+		int bIndex = db.bringBookIndex(post.getBookCode()); //0부터 시작하니까 마지막 index는 페이지 -1된 값임
+		bIndex+=2;
 		post.setPageIndex(bIndex);
 		BookDTO book = new BookDTO();
 		book.setBookCode(post.getBookCode());
@@ -322,6 +324,15 @@ public class MainService {
 			System.out.println("책 페이지 가져오기 : "+book.getPosts());
 		}
 		return books;
+	}
+
+	public int deleteBook(BookDTO book) {
+			String bookCode = book.getBookCode();
+			System.out.println("delete bookCode : "+bookCode);
+			int result =db.disableBookedPost(bookCode);
+			int result2 = db.disableBook(bookCode);
+			
+		return 0;
 	}
 
 

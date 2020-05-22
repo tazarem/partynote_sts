@@ -15,7 +15,7 @@
 	<bean id="dataSource" 
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-		<property name="url" value="jdbc:mysql://localhost:3306/partynote?serverTimezone=UTC" />
+		<property name="url" value="jdbc:mysql://localhost:3306/partynote?serverTimezone=UTC&amp;allowMultiQueries=true" />
 		<property name="username" value="root"/>
 		<property name="password" value="1234"/><!--여기에 본인이 쓰고있는 DB와 계정을 쓰세요-->
 	</bean>

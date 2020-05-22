@@ -75,9 +75,9 @@
 	</update>
 	
 	<update id="updatePostIndex" parameterType="java.util.List">
-	 	UPDATE NotePost Set
-	 	<foreach collection="list" item="item" separator=",">
-    	postIndex=#{item.postIndex}
+		<foreach collection="list" index="index" item="item" open="" separator=";" close="">
+		UPDATE notepost
+    	SET postIndex=#{item.postIndex}
     	where postCode=#{item.postCode}
     	</foreach>
 	</update>
@@ -114,7 +114,14 @@
 	<insert id="makeBook" parameterType="book">
 	INSERT INTO Book values(#{bookCode},#{bookTitle},2,default,default)
 	</insert>
-	
+	<update id="remakeBook" parameterType="book">
+	UPDATE Book SET
+	bookTitle=#{bookTitle},
+	bookPage=2,
+	usable=default,
+	recentDate=default
+	where bookCode=#{bookCode}
+	</update>
 	<update id="updatePostBooked" parameterType="post">
 	UPDATE NotePost Set
 	booked=true,
@@ -128,12 +135,19 @@
 	</update>
 	
 	<select id="bringBooks" parameterType="String" resultType="book">
-	SELECT * from book where bookCode like #{noteCode} order by recentDate desc
+	SELECT * from book where bookCode like #{noteCode} and usable=1 order by recentDate desc
 	</select>
+
 	<select id="bringBookPages" parameterType="String" resultType="post">
 	SELECT*FROM notepost where bookCode=#{bookCode} order by pageIndex asc
 	</select>
 	<select id="bringLatestBookIndex" parameterType="String" resultType="java.lang.Integer">
 	select pageIndex from notepost Where bookCode=#{bookCode} order by pageIndex desc limit 1
 	</select>
+	<update id="disableBookedPost" parameterType="String">
+	UPDATE notepost SET usable=0, bookCode=null, booked=0, pageIndex=null where bookCode=#{bookCode}
+	</update>
+	<update id="disableBook" parameterType="String">
+	UPDATE book SET usable=0 where bookCode=#{bookCode}
+	</update>
 </mapper>

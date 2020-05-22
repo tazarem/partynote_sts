@@ -91,6 +91,7 @@ public class NoteController {
 	@RequestMapping(value = "/updatePostIndex", method = RequestMethod.POST)
 	public int updatePostIndex(@RequestBody List<PostDTO> posts) {
 		System.out.println("포스트 인덱스 보정");
+		System.out.println(posts);
 		int answer = ms.updatePostIndex(posts);
 	return answer;}
 	
@@ -131,10 +132,10 @@ public class NoteController {
 		int answer = 0;
 	return answer;}
 	
-	@RequestMapping(value = "/deleteBookPage", method = RequestMethod.POST)
-	public int deleteBookPage(@RequestBody PostDTO post) {
-		System.out.println("책 속 게시물 삭제");
-		int answer = 0;
+	@RequestMapping(value = "/deleteBook", method = RequestMethod.POST)
+	public int deleteBook(@RequestBody BookDTO book) {
+		System.out.println("책 삭제");
+		int answer = ms.deleteBook(book);
 	return answer;}
 	
 	@RequestMapping(value = "/deleteWholeBook", method = RequestMethod.POST)
