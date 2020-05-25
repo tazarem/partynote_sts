@@ -6,6 +6,7 @@ import com.yeri.partynote.dto.BookDTO;
 import com.yeri.partynote.dto.MemberDTO;
 import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.dto.PostDTO;
+import com.yeri.partynote.dto.SearchDTO;
 import com.yeri.partynote.service.MainService;
 
 import java.util.List;
@@ -143,4 +144,12 @@ public class NoteController {
 		System.out.println("책 해제");
 		int answer = ms.releaseBook(book);
 	return answer;}
+
+	@RequestMapping(value = "/generalSearch", method = RequestMethod.POST)
+	public SearchDTO generalSearch(@RequestBody String searchData) {
+		System.out.println("전역검색 : "+searchData);
+		searchData = searchData.substring(0,searchData.length()-1);
+		SearchDTO result = ms.generalSearch(searchData);	
+		
+	return result;}
 }

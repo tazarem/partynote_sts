@@ -32,6 +32,11 @@ public class MainDatabase {
 		// TODO Auto-generated method stub
 		return sql.selectOne("Member.existedId",userId);
 	}
+	
+	public MemberDTO bringProfile(String userId) {
+		// TODO Auto-generated method stub
+		return sql.selectOne("Member.bringProfile",userId);
+	}
 
 	public List<NoteDTO> bringNote(String userId) {
 
@@ -166,6 +171,28 @@ public class MainDatabase {
 
 		return sql.update("Note.releaseBookedPost",bookCode);
 	}
+
+	public List<MemberDTO> searchUsers(String searchData) {
+
+		return sql.selectList("Member.searchUsers",searchData);
+	}
+
+	public List<BookDTO> searchBooks(String searchData) {
+		
+		return sql.selectList("Note.searchBooks",searchData);
+	}
+
+	public List<NoteDTO> searchNotes(String searchData) {
+
+		return sql.selectList("Note.searchNotes",searchData);
+	}
+
+	public List<PostDTO> searchPosts(String searchData) {
+
+		return sql.selectList("Note.searchPosts",searchData);
+	}
+
+
 
 
 

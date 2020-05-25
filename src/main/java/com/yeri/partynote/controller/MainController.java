@@ -7,6 +7,7 @@ import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.service.MainService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,22 +40,28 @@ public class MainController {
 	public String join(@RequestBody MemberDTO newMember) {
 		System.out.println("회원가입 시도 : "+newMember);
 		String result = ms.join(newMember);
-
+		
 	return result;}
 	
 	@RequestMapping(value = "/idCheck", method = RequestMethod.POST)
 	public boolean existedId(@RequestBody String userId) {
-//		System.out.println("중복확인 : "+userId);
-		boolean result = ms.existedId(userId);//true면 사용할 수 있음
+		System.out.println("중복확인 : "+userId);
+		boolean result = ms.existedId(userId.substring(0,userId.length()-1));//true면 사용할 수 있음
 	return result;}
 	
-	@RequestMapping(value = "/bringProfile", method = RequestMethod.GET)
-	public int bringProfile(@RequestBody String userId) {
-		int answer = 0;
-	return answer;}
+	@RequestMapping(value = "/emailCheck", method = RequestMethod.POST)
+	public boolean emailCheck(@RequestBody String userEmail) { //가입하고 나면 작성한 이메일로 이메일 송부. 인증 과정을 거쳐야 완벽하게 가입됨.
+		boolean result = false;
+	return result;}
+	
+	@RequestMapping(value = "/bringProfile", method = RequestMethod.POST)
+	public MemberDTO bringProfile(@RequestBody String userId) {
+		MemberDTO member = ms.bringProfile(userId);
+	return member;}
 	
 	@RequestMapping(value = "/editProfile", method = RequestMethod.POST)
 	public int editProfile(@RequestBody String userId) {
 		int answer = 0;
 	return answer;}
+
 }

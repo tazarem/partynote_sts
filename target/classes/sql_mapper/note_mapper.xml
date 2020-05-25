@@ -153,4 +153,13 @@
 	<update id="releaseBookedPost" parameterType="String">
 	UPDATE notepost SET bookCode=null, booked=0, pageIndex=null where bookCode=#{bookCode}
 	</update>
+	<select id="searchBooks" parameterType="String" resultType="book">
+	SELECT*from book where bookTitle like #{searchData}
+	</select>
+	<select id="searchNotes" parameterType="String" resultType="note">
+	SELECT*from partynote where noteTitle like #{searchData}
+	</select>
+	<select id="searchPosts" parameterType="String" resultType="post">
+	SELECT*from notePost where postContents like #{searchData}
+	</select>
 </mapper>

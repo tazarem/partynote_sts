@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.yeri.partynote.db.MainDatabase;
@@ -12,6 +13,8 @@ import com.yeri.partynote.dto.BookDTO;
 import com.yeri.partynote.dto.MemberDTO;
 import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.dto.PostDTO;
+import com.yeri.partynote.dto.SearchDTO;
+import com.yeri.partynote.utils.EmailServiceImpl;
 
 @Service
 public class MainService {
@@ -19,13 +22,36 @@ public class MainService {
 	@Autowired
 	MainDatabase db;
 	
+	@Autowired
+	EmailServiceImpl email; //이메일 인증할때 쓰기
+	
+	@Autowired
+	BCryptPasswordEncoder bcrypt;
+	
 
-	public MemberDTO  login(MemberDTO member) { //로그인
+	public MemberDTO login(MemberDTO member) { //로그인
+//		.matches(rawPassword,
+		int answer=0;
+		String rawPw=member.getUserPw();
 		MemberDTO loginUser = db.login(member);
-	return loginUser;}
+		String encodedPw = loginUser.getUserPw();
+		MemberDTO logined=null;
+		if(bcrypt.matches(rawPw,encodedPw)) {
+			answer=1;
+			System.out.println("비밀번호 확인.");
+			logined=loginUser;
+		}
+
+	return logined;}
 	
 	public String join(MemberDTO newMember) { //회원가입
 		String result = "회원가입 시도";
+		
+		//비밀번호 암호화하기
+		String encodedPw=bcrypt.encode(newMember.getUserPw());
+		
+		newMember.setUserPw(encodedPw);
+		
 		int answer = db.join(newMember);
 		if(answer==1) {
 			result = "회원가입 되었습니다.";
@@ -40,9 +66,15 @@ public class MainService {
 		String isExisted = db.existedId(userId);
 		if(isExisted==null) {
 //			써도 되는 아이디
+			System.out.println("사용가능한 유저 아이디 :"+userId);
 			result= true;
 		}
 		return result;
+	}
+
+	public MemberDTO bringProfile(String userId) {
+		MemberDTO member = db.bringProfile(userId);
+		return member;
 	}
 	
 	//노트 및 포스트
@@ -342,6 +374,24 @@ public class MainService {
 				int result2 = db.disableBook(bookCode);
 		return 0;
 	}
+
+	public SearchDTO generalSearch(String searchData) {
+		searchData ="%"+searchData+"%";
+		SearchDTO result = new SearchDTO();
+		//1. 유저 검색
+		List<MemberDTO> members = db.searchUsers(searchData);
+		result.setMembers(members);
+		//2. book/note/post 검색
+		List<BookDTO> books = db.searchBooks(searchData);
+		result.setBooks(books);
+		List<NoteDTO> notes = db.searchNotes(searchData);
+		result.setNotes(notes);
+		List<PostDTO> posts = db.searchPosts(searchData);
+		result.setPosts(posts);
+		
+		return result;
+	}
+
 
 
 

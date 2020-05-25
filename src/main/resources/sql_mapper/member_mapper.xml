@@ -4,12 +4,18 @@
  
 <mapper namespace="Member"> 
  	<insert id="joinMember" parameterType="member">
- 	INSERT INTO Member VALUES(#{userId},#{userPw},#{userName},#{userEmail},DEFAULT)
+ 	INSERT INTO Member VALUES(#{userId},#{userPw},#{userName},#{userEmail},'','',DEFAULT)
  	</insert>
  	<select	id="loginMember" parameterType="member" resultType="member">
- 	SELECT userId, userPw, userName, userEmail FROM Member WHERE userId=#{userId} AND userPw=#{userPw}  
+ 	SELECT userId, userPw, userName, userEmail FROM Member WHERE userId=#{userId}  
  	</select>
  	<select id="existedId" parameterType="String" resultType="String">
- 	SELECT userId FROM Member
+ 	SELECT userId FROM Member where userId=#{userId}
+ 	</select>
+ 	<select id="searchUsers" parameterType="String" resultType="member">
+ 	SELECT userId FROM Member where userId like #{searchData}
+ 	</select>
+ 	<select id="bringProfile" parameterType="String" resultType="member">
+ 	SELECT userId,userName,userEmail,quote,picture from Member Where userId=#{userId}
  	</select>
 </mapper>
