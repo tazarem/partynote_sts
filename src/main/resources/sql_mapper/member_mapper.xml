@@ -18,4 +18,31 @@
  	<select id="bringProfile" parameterType="String" resultType="member">
  	SELECT userId,userName,userEmail,quote,picture from Member Where userId=#{userId}
  	</select>
+ 	<update id="editUserId" parameterType="ids">
+ 	update member set
+ 	userId=#{newId}
+ 	where userId=#{oldId}
+	</update>
+	<update id="editProfileDefault" parameterType="member">
+	UPDATE member Set
+	userName=#{userName},
+	userEmail=#{userEmail},
+	quote=#{quote}
+	where userId=#{userId}
+	</update>
+	<update id="editUserPw" parameterType="member">
+	update member set
+	userPw=#{userPw}
+	where userId=#{userId}
+	</update>
+	
+	<insert id="makeFriends" parameterType="fr">
+	insert into friend values(#{userId},#{friendId},default,default,default)
+	</insert>
+	<select id="isYourFriends" parameterType="fr" resultType="fr">
+	select * from friend where userId=#{userId} and friendId=#{friendId}
+	</select>
+	<select id="bringNewFriendsReq" parameterType="String" resultType="int">
+	select count(*) from friend where friendId=#{userId} and `read`=false
+	</select>
 </mapper>

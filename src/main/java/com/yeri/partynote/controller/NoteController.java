@@ -3,21 +3,18 @@ package com.yeri.partynote.controller;
 
 
 import com.yeri.partynote.dto.BookDTO;
-import com.yeri.partynote.dto.MemberDTO;
 import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.dto.PostDTO;
 import com.yeri.partynote.dto.SearchDTO;
-import com.yeri.partynote.service.MainService;
+import com.yeri.partynote.service.NoteService;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins="http://localhost:4040") //vue 가 돌아가는 서버의 크로스 오리진 허용
@@ -25,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class NoteController {
 	
 	@Autowired 
-	MainService ms;
+	NoteService ns;
 	
 	//Note
 	@RequestMapping(value = "/bringNoteIndex", method = RequestMethod.GET)
 	public List<NoteDTO> bringNoteIndex(String userId) {
 		//노트 목록을 불러옵니다.
 		System.out.println(userId);
-		List<NoteDTO> notes = ms.bringNote(userId);
+		List<NoteDTO> notes = ns.bringNote(userId);
 		
 	return notes;}
 	
@@ -41,7 +38,7 @@ public class NoteController {
 //		새로운 노트를 생성합니다
 	    System.out.println(newNote);
 	    String userId = newNote.getNoteCode();//노트코드안에 임시로 저장된 아이디 가져옴
-		boolean answer = ms.makeNote(newNote, userId);
+		boolean answer = ns.makeNote(newNote, userId);
 		
 	return answer;}
 	
@@ -49,14 +46,14 @@ public class NoteController {
 	public boolean editNote(@RequestBody NoteDTO note) {
 //		노트의 내용을 편집합니다.
 	    System.out.println(note);
-		boolean answer = ms.editNote(note);
+		boolean answer = ns.editNote(note);
 		
 	return answer;}
 	
 	@RequestMapping(value = "/deleteNote", method = RequestMethod.POST)
 	public int deleteNote(@RequestBody NoteDTO note) {
 //		노트를 삭제합니다.
-		int answer = ms.deleteNote(note);
+		int answer = ns.deleteNote(note);
 		
 	return answer;}
 	
@@ -66,34 +63,34 @@ public class NoteController {
 		
 		noteCode = noteCode.substring(0,noteCode.length()-1);//=이 붙네 ㅡㅡ;;
 		System.out.println("노트코드 : "+noteCode);
-		List<PostDTO> posts = ms.bringPost(noteCode);
+		List<PostDTO> posts = ns.bringPost(noteCode);
 	return posts;}
 
 	@RequestMapping(value = "/makePost", method = RequestMethod.POST)
 	public boolean makePost(@RequestBody PostDTO newPost) {
 		String appendCode = newPost.getPostCode();
 		System.out.println(newPost);
-		boolean answer = ms.makePost(newPost,appendCode);
+		boolean answer = ns.makePost(newPost,appendCode);
 	
 	return answer;}
 	
 	@RequestMapping(value = "/deletePost", method = RequestMethod.POST)
 	public int deletePost(@RequestBody PostDTO post) {
 		System.out.println("포스트 삭제 : " + post.getPostCode());
-		int answer = ms.deletePost(post);
+		int answer = ns.deletePost(post);
 	return answer;}
 	
 	@RequestMapping(value = "/editPost", method = RequestMethod.POST)
 	public int editPost(@RequestBody PostDTO post) {
 		System.out.println("포스트 수정 : " + post);
-		int answer = ms.editPost(post);
+		int answer = ns.editPost(post);
 	return answer;}
 	
 	@RequestMapping(value = "/updatePostIndex", method = RequestMethod.POST)
 	public int updatePostIndex(@RequestBody List<PostDTO> posts) {
 		System.out.println("포스트 인덱스 보정");
 		System.out.println(posts);
-		int answer = ms.updatePostIndex(posts);
+		int answer = ns.updatePostIndex(posts);
 	return answer;}
 	
 	// Book
@@ -101,18 +98,18 @@ public class NoteController {
 	public int makeBook(@RequestBody BookDTO newBook) {
 		System.out.println("책 제작");
 		System.out.println(newBook);
-		int answer = ms.makeBook(newBook);
+		int answer = ns.makeBook(newBook);
 	return answer;}
 	@RequestMapping(value = "/bringBooks", method = RequestMethod.POST)
 	public List<BookDTO> bringBooks(@RequestBody String noteCode) {
 		System.out.println("책들 가져오기");
-		List<BookDTO> books = ms.bringBooks(noteCode.substring(0,noteCode.length()-1));
+		List<BookDTO> books = ns.bringBooks(noteCode.substring(0,noteCode.length()-1));
 	return books;}
 	
 	@RequestMapping(value = "/addPageToBook", method = RequestMethod.POST)
 	public int addPageBook(@RequestBody PostDTO post) {
 		System.out.println("페이지 추가");
-		int answer = ms.addBookPageAndIndex(post);
+		int answer = ns.addBookPageAndIndex(post);
 	return answer;}
 	
 	@RequestMapping(value = "/addPagesToBook", method = RequestMethod.POST)
@@ -136,20 +133,20 @@ public class NoteController {
 	@RequestMapping(value = "/deleteBook", method = RequestMethod.POST)
 	public int deleteBook(@RequestBody BookDTO book) {
 		System.out.println("책 삭제");
-		int answer = ms.deleteBook(book);
+		int answer = ns.deleteBook(book);
 	return answer;}
 	
 	@RequestMapping(value = "/releaseBook", method = RequestMethod.POST)
 	public int releaseBook(@RequestBody BookDTO book) {
 		System.out.println("책 해제");
-		int answer = ms.releaseBook(book);
+		int answer = ns.releaseBook(book);
 	return answer;}
 
 	@RequestMapping(value = "/generalSearch", method = RequestMethod.POST)
 	public SearchDTO generalSearch(@RequestBody String searchData) {
 		System.out.println("전역검색 : "+searchData);
 		searchData = searchData.substring(0,searchData.length()-1);
-		SearchDTO result = ms.generalSearch(searchData);	
+		SearchDTO result = ns.generalSearch(searchData);	
 		
 	return result;}
 }

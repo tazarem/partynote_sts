@@ -2,12 +2,13 @@ package com.yeri.partynote.controller;
 
 
 
+import com.yeri.partynote.dto.FriendDTO;
 import com.yeri.partynote.dto.MemberDTO;
-import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.service.MainService;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,12 +57,35 @@ public class MainController {
 	
 	@RequestMapping(value = "/bringProfile", method = RequestMethod.POST)
 	public MemberDTO bringProfile(@RequestBody String userId) {
-		MemberDTO member = ms.bringProfile(userId);
+		MemberDTO member = ms.bringProfile(userId.substring(0,userId.length()-1));
 	return member;}
 	
-	@RequestMapping(value = "/editProfile", method = RequestMethod.POST)
-	public int editProfile(@RequestBody String userId) {
-		int answer = 0;
+	@RequestMapping(value = "/checkPw", method = RequestMethod.POST)
+	public int checkPw(@RequestBody MemberDTO idAndPw) {
+		int answer = ms.checkPw(idAndPw);
 	return answer;}
-
+	
+	@RequestMapping(value = "/editProfile", method = RequestMethod.POST)
+	public int editProfile(@RequestBody List<MemberDTO> editedDatas) {
+			int answer = ms.editProfile(editedDatas.get(0),editedDatas.get(1));
+	return answer;}
+	
+	@RequestMapping(value = "/makeFriends", method = RequestMethod.POST)
+	public int makeFriends(@RequestBody FriendDTO fr) {
+		System.out.println("친구요청 : "+fr);
+		int answer = ms.makeFriends(fr);
+	return answer;}
+	
+	@RequestMapping(value = "/isYourFriends", method = RequestMethod.POST)
+	public int isYourFriends(@RequestBody FriendDTO fr) {
+		System.out.println("친구인지 확인 : "+fr);
+		int answer = ms.isYourFriends(fr);
+	return answer;}
+	
+	@RequestMapping(value = "/bringNewFriendsReq", method = RequestMethod.POST)
+	public int bringNewFriendsReq(@RequestBody String userId) {
+		System.out.println("새로운 친구요청 확인 : "+userId);
+		int result = ms.bringNewFriendsReq(userId.substring(0,userId.length()-1));
+		System.out.println(result);
+	return result;}
 }

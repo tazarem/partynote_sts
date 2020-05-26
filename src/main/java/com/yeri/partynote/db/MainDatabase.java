@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.yeri.partynote.dto.BookDTO;
+import com.yeri.partynote.dto.EditIdsDTO;
+import com.yeri.partynote.dto.FriendDTO;
 import com.yeri.partynote.dto.MemberDTO;
 import com.yeri.partynote.dto.NoteDTO;
 import com.yeri.partynote.dto.PostDTO;
@@ -37,7 +39,29 @@ public class MainDatabase {
 		// TODO Auto-generated method stub
 		return sql.selectOne("Member.bringProfile",userId);
 	}
+	public int editUserId(EditIdsDTO ids) {
+		
+		return sql.update("Member.editUserId",ids);
+	}
+	public int editProfileDefault(MemberDTO editedData) {
+		
+		return sql.update("Member.editProfileDefault", editedData);
+	}
+	public int editUserPw(MemberDTO editedData) {
+		
+		return sql.update("Member.editUserPw",editedData);
+	}
+	
+	public int makeFriends(FriendDTO fr) {
 
+		return sql.insert("Member.makeFriends",fr);
+	}
+	
+	
+	
+	
+	
+	
 	public List<NoteDTO> bringNote(String userId) {
 
 		userId+="_%";
@@ -191,6 +215,22 @@ public class MainDatabase {
 
 		return sql.selectList("Note.searchPosts",searchData);
 	}
+
+	public FriendDTO isYourFriends(FriendDTO fr) {
+
+		return sql.selectOne("Member.isYourFriends",fr);
+	}
+
+	public int bringNewFriendsReq(String userId) {
+		
+		return sql.selectOne("Member.bringNewFriendsReq",userId);
+	}
+
+
+
+
+
+
 
 
 
