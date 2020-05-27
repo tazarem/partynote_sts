@@ -45,4 +45,7 @@
 	<select id="bringNewFriendsReq" parameterType="String" resultType="int">
 	select count(*) from friend where friendId=#{userId} and `read`=false
 	</select>
+	<select id="bringFriendsDet" parameterType="String" resultType="fr">
+	select * from friend where friendId=#{userId} order by recentDate
+	</select>
 </mapper>

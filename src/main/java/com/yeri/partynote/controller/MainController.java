@@ -86,6 +86,13 @@ public class MainController {
 	public int bringNewFriendsReq(@RequestBody String userId) {
 		System.out.println("새로운 친구요청 확인 : "+userId);
 		int result = ms.bringNewFriendsReq(userId.substring(0,userId.length()-1));
-		System.out.println(result);
+//		System.out.println(result);
+	return result;}
+	
+	@RequestMapping(value = "/bringNewFriendsDet", method = RequestMethod.POST)
+	public List<FriendDTO> bringNewFriendsDet(@RequestBody String userId) {
+		System.out.println("친구요청 조회(읽은 것 포함) : "+userId);
+		List<FriendDTO> result = ms.bringNewFriendsDet(userId.substring(0,userId.length()-1));
+//		System.out.println(result);
 	return result;}
 }

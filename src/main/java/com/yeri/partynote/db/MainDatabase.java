@@ -226,6 +226,11 @@ public class MainDatabase {
 		return sql.selectOne("Member.bringNewFriendsReq",userId);
 	}
 
+	public List<FriendDTO> bringNewFriendsDet(String userId) {
+		// TODO Auto-generated method stub
+		return sql.selectList("Member.bringFriendsDet",userId);
+	}
+
 
 
 

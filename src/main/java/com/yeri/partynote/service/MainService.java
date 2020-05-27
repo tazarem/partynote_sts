@@ -134,6 +134,11 @@ public class MainService {
 		int result = db.bringNewFriendsReq(userId);
 		return result;
 	}
+
+	public List<FriendDTO> bringNewFriendsDet(String userId) {
+		List<FriendDTO> result = db.bringNewFriendsDet(userId);
+		return result;
+	}
 	
 	
 	
