@@ -139,6 +139,33 @@ public class MainService {
 		List<FriendDTO> result = db.bringNewFriendsDet(userId);
 		return result;
 	}
+
+	public List<FriendDTO> bringRequestedFri(String userId) {
+
+		List<FriendDTO> result = db.bringRequestedFri(userId);
+				
+		return result;
+	}
+
+	public int acceptFriendsReq(FriendDTO recode) {
+		//인서트와 업데이트를 둘다 시행합니다.  **
+		//만약 양측에서 친구요청을 했을 경우 업데이트 each만 수행
+		
+		int answer = db.acInsertAnother(recode);
+		answer += db.acUpdateEach(recode);
+		return answer;
+	}
+
+	public int rejectFriendsReq(FriendDTO recode) {
+		// 친구요청 delete
+		int answer = db.rejectFriendsReq(recode);
+		return answer;
+	}
+
+	public List<FriendDTO> bringFriends(String userId) {
+		List<FriendDTO> friendList = db.bringFriends(userId);
+		return friendList;
+	}
 	
 	
 	

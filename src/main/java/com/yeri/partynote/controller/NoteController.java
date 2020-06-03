@@ -9,6 +9,7 @@ import com.yeri.partynote.dto.SearchDTO;
 import com.yeri.partynote.service.NoteService;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -143,9 +144,9 @@ public class NoteController {
 	return answer;}
 
 	@RequestMapping(value = "/generalSearch", method = RequestMethod.POST)
-	public SearchDTO generalSearch(@RequestBody String searchData) {
-		System.out.println("전역검색 : "+searchData);
-		searchData = searchData.substring(0,searchData.length()-1);
+	public SearchDTO generalSearch(@RequestBody Map<String,String> sd) {
+		System.out.println("전역검색 : "+sd.get("searchData"));
+		String searchData=sd.get("searchData");
 		SearchDTO result = ns.generalSearch(searchData);	
 		
 	return result;}

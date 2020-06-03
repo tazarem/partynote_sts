@@ -86,13 +86,35 @@ public class MainController {
 	public int bringNewFriendsReq(@RequestBody String userId) {
 		System.out.println("새로운 친구요청 확인 : "+userId);
 		int result = ms.bringNewFriendsReq(userId.substring(0,userId.length()-1));
-//		System.out.println(result);
+	return result;}
+	
+	@RequestMapping(value = "/bringRequestedFri", method = RequestMethod.POST)
+	public List<FriendDTO> bringRequestedFri(@RequestBody String userId) {
+		System.out.println("요청 중인 사항(친구요청) 불러오기 : "+userId);
+		List<FriendDTO> result = ms.bringRequestedFri(userId.substring(0,userId.length()-1));
 	return result;}
 	
 	@RequestMapping(value = "/bringNewFriendsDet", method = RequestMethod.POST)
 	public List<FriendDTO> bringNewFriendsDet(@RequestBody String userId) {
 		System.out.println("친구요청 조회(읽은 것 포함) : "+userId);
 		List<FriendDTO> result = ms.bringNewFriendsDet(userId.substring(0,userId.length()-1));
-//		System.out.println(result);
+	return result;}
+	
+	@RequestMapping(value = "/acceptFriendsReq", method = RequestMethod.POST)
+	public int acceptFriendsReq(@RequestBody FriendDTO recode) {
+		System.out.println("친구요청 승인 : "+recode);
+		int result = ms.acceptFriendsReq(recode);
+	return result;}
+	
+	@RequestMapping(value = "/rejectFriendsReq", method = RequestMethod.POST)
+	public int rejectFriendsReq(@RequestBody FriendDTO recode) {
+		System.out.println("친구요청 거절 : "+recode);
+		int result = ms.rejectFriendsReq(recode);
+	return result;}
+	
+	@RequestMapping(value = "/bringFriends", method = RequestMethod.POST)
+	public List<FriendDTO> bringFriends(@RequestBody String userId) {
+		System.out.println("친구 불러오기 : "+userId);
+		List<FriendDTO> result = ms.bringFriends(userId.substring(0,userId.length()-1));
 	return result;}
 }

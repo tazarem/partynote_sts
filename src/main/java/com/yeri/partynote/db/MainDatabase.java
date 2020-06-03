@@ -231,6 +231,30 @@ public class MainDatabase {
 		return sql.selectList("Member.bringFriendsDet",userId);
 	}
 
+	public List<FriendDTO> bringRequestedFri(String userId) {
+		return sql.selectList("Member.bringRequestedFri",userId);
+	}
+
+	public int acInsertAnother(FriendDTO recode) {
+		return sql.insert("Member.acInsertAnother", recode);
+	}
+
+	public int acUpdateEach(FriendDTO recode) {
+		return sql.update("Member.acUpdateEach", recode);
+	}
+
+	public int rejectFriendsReq(FriendDTO recode) {
+		// 친구요청 삭제 및 거절알림 등록
+		System.out.println("친구요청 거절 sql 시행");
+		return sql.delete("Member.rejectFriendsReq", recode);
+	}
+	
+	public List<FriendDTO> bringFriends(String userId) {
+		return sql.selectList("Member.bringFriends", userId);
+	}
+
+
+
 
 
 

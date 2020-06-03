@@ -269,11 +269,11 @@ public class NoteService {
 	
 	public int addBookPageAndIndex(PostDTO post) {
 		int bIndex = db.bringBookIndex(post.getBookCode()); //0부터 시작하니까 마지막 index는 페이지 -1된 값임
-		bIndex+=2;
+		bIndex+=1;
 		post.setPageIndex(bIndex);
 		BookDTO book = new BookDTO();
 		book.setBookCode(post.getBookCode());
-		book.setBookPage(bIndex);
+		book.setBookPage(bIndex+1);
 		int i = addCountWholeBookPage(book);
 		System.out.println("updateBookPage : "+i);
 		int answer = addBookPage(post);
@@ -287,7 +287,7 @@ public class NoteService {
 	
 	public int addCountWholeBookPage(BookDTO book) {//페이지 총수 업데이트
 		int answer=0;
-		db.addCountWholeBookPage(book);
+		answer = db.addCountWholeBookPage(book);
 	return answer;}
 
 	public List<BookDTO> bringBooks(String noteCode) {

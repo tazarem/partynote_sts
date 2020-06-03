@@ -11,7 +11,7 @@
 	</select>
 	<insert id="makeNote" parameterType="note">
 	INSERT INTO PartyNote values(#{noteCode},#{noteTitle},#{noteDes},#{noteColor},
-	'',default,default)
+	'',#{priv},default,default)
 	</insert>
 	
 	<update id="deleteNote" parameterType="note">

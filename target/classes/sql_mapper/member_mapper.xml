@@ -43,9 +43,33 @@
 	select * from friend where userId=#{userId} and friendId=#{friendId}
 	</select>
 	<select id="bringNewFriendsReq" parameterType="String" resultType="int">
-	select count(*) from friend where friendId=#{userId} and `read`=false
+	select count(*) from friend where friendId=#{userId} and `read`=false order by recentDate
 	</select>
 	<select id="bringFriendsDet" parameterType="String" resultType="fr">
-	select * from friend where friendId=#{userId} order by recentDate
+	select * from friend where friendId=#{userId} and `read`=false order by recentDate
 	</select>
+	<select id="bringRequestedFri" parameterType="String" resultType="fr">
+	select*from friend where userId=#{userId} and `read`=false order by recentDate
+	</select>
+	<update id="acUpdateEach" parameterType="fr">
+	update friend set friendEach=1, read=1 where 
+	(userId=#{userId} and friendId=#{friendId})
+	or
+	(userId=#{friendId} and friendId=#{userId})   
+	</update>
+	<insert id="acInsertAnother" parameterType="fr">
+	insert into friend values(
+	#{friendId},
+	#{userId},
+	1,
+	1,
+	default
+	)
+	</insert>
+	<select id="bringFriends" parameterType="String" resultType="fr">
+	select*from friend where friendEach=1 and userId=#{userId} order by recentDate
+	</select>
+	<delete id="rejectFriendsReq" parameterType="fr">
+	delete from friend where userId=#{userId} and friendId=#{friendId}
+	</delete>
 </mapper>
